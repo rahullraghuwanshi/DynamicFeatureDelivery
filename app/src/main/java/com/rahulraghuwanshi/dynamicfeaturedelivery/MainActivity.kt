@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
@@ -26,20 +25,40 @@ class MainActivity : AppCompatActivity() {
         Log.d("TAG", "onCreate: $installedModules")
 
         findViewById<Button>(R.id.btnOpenDynamiceModule).setOnClickListener {
-            if (installedModules.contains("dynamicfeatureOne")){
+            if (installedModules.contains("dynamicfeatureOne")) {
                 Log.d("TAG", "onCreate: Already Installed")
                 openFirstModule()
-            }else{
+            } else {
                 Log.d("TAG", "onCreate: Need to install")
                 downloadDynamicModule("dynamicfeatureOne")
             }
         }
-
+        findViewById<Button>(R.id.btnOpenDynamiceModuleTwo).setOnClickListener {
+            if (installedModules.contains("dynamicfeatureTwo")) {
+                Log.d("TAG", "onCreate: Already Installed")
+                openSecondModule()
+            } else {
+                Log.d("TAG", "onCreate: Need to install")
+                downloadDynamicModule("dynamicfeatureTwo")
+            }
+        }
     }
 
-    private fun openFirstModule(){
+    private fun openFirstModule() {
         val intent = Intent()
-        intent.setClassName("com.rahulraghuwanshi.dynamicfeaturedelivery", "com.rahulraghuwanshi.dynamicfeatureone.FirstModuleActivity")
+        intent.setClassName(
+            "com.rahulraghuwanshi.dynamicfeaturedelivery",
+            "com.rahulraghuwanshi.dynamicfeatureone.FirstModuleActivity"
+        )
+        startActivity(intent)
+    }
+
+    private fun openSecondModule() {
+        val intent = Intent()
+        intent.setClassName(
+            "com.rahulraghuwanshi.dynamicfeaturedelivery",
+            "com.rahulraghuwanshi.dynamicfeaturetwo.ModuleTwoActivity"
+        )
         startActivity(intent)
     }
 
@@ -55,9 +74,11 @@ class MainActivity : AppCompatActivity() {
                     when (splitInstallSessionState.status()) {
                         SplitInstallSessionStatus.INSTALLED -> {
                             Log.d("TAG", "Dynamic Module downloaded")
-                          if (moduleName.equals("dynamicfeatureOne")){
-                              openFirstModule()
-                          }
+                            if (moduleName.equals("dynamicfeatureOne")) {
+                                openFirstModule()
+                            } else if (moduleName.equals("dynamicfeatureTwo")) {
+                                openSecondModule()
+                            }
                         }
                     }
                 }

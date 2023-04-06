@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "DynamicFeatureDelivery"
 include ':app'
 include ':dynamicfeatureOne'
+include ':dynamicfeatureTwo'
